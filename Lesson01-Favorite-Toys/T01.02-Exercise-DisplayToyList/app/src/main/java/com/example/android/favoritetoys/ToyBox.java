@@ -25,10 +25,10 @@ public final class ToyBox {
      */
     public static String[] getToyNames() {
         return new String[] {
-                "Red Toy Wagon",
-                "Chemistry Set",
-                "Yo-Yo",
-                "Pop-Up Book",
+                "Dara Sara",
+                "ToyToy",
+                "Ugly Toy",
+                "Cat Toy",
                 "Generic Uncopyrighted Mouse",
                 "Finger Paint",
                 "Sock Monkey",
