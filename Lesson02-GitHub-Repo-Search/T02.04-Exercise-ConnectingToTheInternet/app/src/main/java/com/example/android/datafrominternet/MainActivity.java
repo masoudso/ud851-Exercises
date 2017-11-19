@@ -24,23 +24,29 @@ import android.widget.TextView;
 
 import com.example.android.datafrominternet.utilities.NetworkUtils;
 
+import java.io.IOException;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
+    //defined mSearchBoxEditText to be able to connect the java main-
+    //activity to the layout where I have defined EditText and created
+    //an id for it
     private EditText mSearchBoxEditText;
 
     private TextView mUrlDisplayTextView;
 
     private TextView mSearchResultsTextView;
 
+    //Still not sure what the onCreate method is for
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //connecting main activity to EditText in layout
         mSearchBoxEditText = (EditText) findViewById(R.id.et_search_box);
-
+        //connecting main activity to TextView in layout
         mUrlDisplayTextView = (TextView) findViewById(R.id.tv_url_display);
         mSearchResultsTextView = (TextView) findViewById(R.id.tv_github_search_results_json);
     }
@@ -52,11 +58,27 @@ public class MainActivity extends AppCompatActivity {
      * our (not yet created) {@link GithubQueryTask}
      */
     private void makeGithubSearchQuery() {
+        //get text from EditText in the layout
         String githubQuery = mSearchBoxEditText.getText().toString();
+        //still not sure how the url thing works
         URL githubSearchUrl = NetworkUtils.buildUrl(githubQuery);
+        //same here
         mUrlDisplayTextView.setText(githubSearchUrl.toString());
-        // TODO (2) Call getResponseFromHttpUrl and display the results in mSearchResultsTextView
-        // TODO (3) Surround the call to getResponseFromHttpUrl with a try / catch block to catch an IOException
+        //initializing a defined string
+        String gitHubSearchResults = null;
+        try {
+            gitHubSearchResults = NetworkUtils.getResponseFromHttpUrl(githubSearchUrl);
+            mSearchResultsTextView.setText(gitHubSearchResults);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+
+
+        // (2) Call getResponseFromHttpUrl and
+        // display the results in mSearchResultsTextView
+        // (3) Surround the call to getResponseFromHttpUrl with a try
+        // / catch block to catch an IOException
     }
 
     @Override
