@@ -20,7 +20,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.android.datafrominternet.utilities.NetworkUtils;
@@ -30,29 +32,40 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
+    //variables to reference to the layout
+
     private EditText mSearchBoxEditText;
 
     private TextView mUrlDisplayTextView;
 
     private TextView mSearchResultsTextView;
 
-    // TODO (12) Create a variable to store a reference to the error message TextView
+    private TextView errorMessageTextView;
 
-    // TODO (24) Create a ProgressBar variable to store a reference to the ProgressBar
+    //(12) Create a variable to store a reference to the error message TextView
 
+    // (24) Create a ProgressBar variable to store a reference to the ProgressBar
+    //another cool thing; defining progressbar
+    private ProgressBar progressBarView;
+
+    //what happens on create! now stating to make sense!
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //start referencing the variables from layout
 
         mSearchBoxEditText = (EditText) findViewById(R.id.et_search_box);
 
         mUrlDisplayTextView = (TextView) findViewById(R.id.tv_url_display);
         mSearchResultsTextView = (TextView) findViewById(R.id.tv_github_search_results_json);
 
-        // TODO (13) Get a reference to the error TextView using findViewById
+        //(13) Get a reference to the error TextView using findViewById
+        errorMessageTextView = (TextView) findViewById(R.id.tv_error_message_display);
 
-        // TODO (25) Get a reference to the ProgressBar using findViewById
+        // (25) Get a reference to the ProgressBar using findViewById
+        progressBarView = (ProgressBar) findViewById(R.id.pb_loading_indicator);
     }
 
     /**
@@ -68,13 +81,31 @@ public class MainActivity extends AppCompatActivity {
         new GithubQueryTask().execute(githubSearchUrl);
     }
 
-    // TODO (14) Create a method called showJsonDataView to show the data and hide the error
+    // (14) Create a method called showJsonDataView
+    // to show the data and hide the error
+    private void showJsonDataView(){
+        errorMessageTextView.setVisibility(View.INVISIBLE);
+        mSearchResultsTextView.setVisibility(View.VISIBLE);
+    }
 
-    // TODO (15) Create a method called showErrorMessage to show the error and hide the data
+
+    // (15) Create a method called showErrorMessage
+    // to show the error and hide the data
+    private void showErrorMessage(){
+        errorMessageTextView.setVisibility(View.VISIBLE);
+        mSearchResultsTextView.setVisibility(View.INVISIBLE);
+    }
 
     public class GithubQueryTask extends AsyncTask<URL, Void, String> {
 
-        // TODO (26) Override onPreExecute to set the loading indicator to visible
+        // (26) Override onPreExecute to set the loading indicator to visible
+
+        //Oh God now I know how progress bar works in between pre and post exe
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressBarView.setVisibility(View.VISIBLE);
+        }
 
         @Override
         protected String doInBackground(URL... params) {
@@ -90,12 +121,17 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String githubSearchResults) {
-            // TODO (27) As soon as the loading is complete, hide the loading indicator
+            // (27) As soon as the loading is complete, hide the loading indicator
+            progressBarView.setVisibility(View.INVISIBLE);
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
-                // TODO (17) Call showJsonDataView if we have valid, non-null results
+                //(17) Call showJsonDataView if we have valid, non-null results
+                showJsonDataView();
                 mSearchResultsTextView.setText(githubSearchResults);
             }
-            // TODO (16) Call showErrorMessage if the result is null in onPostExecute
+            // (16) Call showErrorMessage if the result is null in onPostExecute
+            else {
+                showErrorMessage();
+            }
         }
     }
 

@@ -30,6 +30,13 @@
         android:layout_height="wrap_content"
         android:hint="Enter a query, then click Search"
         android:textSize="22sp" />
+    <TextView
+        android:id="@+id/masoud"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="(c)Masoud Soltanveis"
+        android:textSize="18sp"/>
 
     <TextView
         android:id="@+id/tv_url_display"
